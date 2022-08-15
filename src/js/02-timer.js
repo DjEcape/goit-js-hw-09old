@@ -1,5 +1,7 @@
 import flatpickr from 'flatpickr';
-import 'flatpickr/dist/flatpickr.min.css';
+// import 'flatpickr/dist/flatpickr.min.css';
+import 'flatpickr/dist/themes/material_green.css';
+
 import Notiflix from 'notiflix';
 import 'notiflix/dist/notiflix-3.2.5.min.css';
 
@@ -17,6 +19,10 @@ refs.startBtnEl.disabled = true;
 
 // flatpickr options
 const options = {
+    onOpen(){
+        timer.stop();
+
+    },
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
@@ -67,7 +73,7 @@ class Timer {
   stop() {
       clearInterval(this.intervalId);
       this.isActive = false;
-      refs.stopBtnEl.disabled = true;  
+    //   refs.stopBtnEl.disabled = true;  
   }
 }
 

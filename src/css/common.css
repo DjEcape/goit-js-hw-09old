@@ -17,6 +17,29 @@ img {
   max-width: 100%;
 }
 
+#datetime-picker{
+  text-align: center;
+  display: block;
+  background: #04896c; 
+  margin: 0 auto ;
+  width: 200px;
+  padding: 5px 0;
+  border-radius: 4px;
+  margin-top: 100px;
+}
+button[data-start]{
+  display: block;
+  margin: 0 auto ;
+  width: 250px;
+  height: 55px;
+  border-radius: 6px;
+  border-color: transparent;
+  /* box-shadow: #212121 6px; */
+  background: #9ef1e2;
+  margin-top: 20px;
+  font-size: large;
+}
+
 .value{
   font-weight: 900;
   font-size: x-large;
@@ -25,12 +48,29 @@ img {
 }
 .label{
   text-align: center;
+  padding: 15px;
+  border-radius: 4px;
+  background: #00816a;
+  padding-top: 25px;
+  font-size: 20px;
+  width: 100px;
 }
+
 .timer{
   display: flex;
-  gap: 30px;
+  justify-content:center;
+  gap: 40px;
+  padding: 10px;
+  border-radius: 10px;
+  background: #205147;
+  width: 800px;
+  margin: 40px auto 0 auto ;
+
 }
 .field{
   display: flex;
   flex-direction: column;
+  padding: 10px;
+  border-radius: 3px;
+  background: #00bf96;
 }
