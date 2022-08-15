@@ -1,28 +1,29 @@
 import flatpickr from 'flatpickr';
 // import 'flatpickr/dist/flatpickr.min.css';
 import 'flatpickr/dist/themes/material_green.css';
-
 import Notiflix from 'notiflix';
 import 'notiflix/dist/notiflix-3.2.5.min.css';
 
 const refs = {
   inputDateEl: document.querySelector('#datetime-picker'),
   startBtnEl: document.querySelector('[data-start]'),
-//   stopBtnEl: document.querySelector('[data-stop]'),
+  //   stopBtnEl: document.querySelector('[data-stop]'),
+  counterBoxEl: document.querySelector('.timer'),
   daysEl: document.querySelector('[data-days]'),
   hoursEl: document.querySelector('[data-hours]'),
   minutesEl: document.querySelector('[data-minutes]'),
   secondsEl: document.querySelector('[data-seconds]'),
 };
+
+console.log(refs.counterBoxEl.lastElementChild.previousElementSibling);
 // refs.stopBtnEl.disabled = true;
 refs.startBtnEl.disabled = true;
-
+Notiflix.Notify.info('Choose the date');
 // flatpickr options
 const options = {
-    onOpen(){
-        timer.stop();
-
-    },
+  onOpen() {
+    timer.stop();
+  },
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
@@ -32,9 +33,9 @@ const options = {
     if (selectedDate[0] <= Date.now()) {
       Notiflix.Notify.failure('Please choose a date in the future');
     } else {
-        Notiflix.Notify.success('Good!');
+      Notiflix.Notify.success('Good!');
       refs.startBtnEl.disabled = false;
-    //   refs.stopBtnEl.disabled = true;
+      //   refs.stopBtnEl.disabled = true;
       refs.startBtnEl.addEventListener('click', onBtnClickStartCount);
       console.log(selectedDate[0]);
     }
@@ -46,11 +47,12 @@ class Timer {
     this.intervalId = null;
     this.isActive = false;
   }
-//start timer
+  //start timer
   start() {
     if (this.isActive) {
       return;
     }
+    refs.startBtnEl.disabled = true;
     const currentTime = Date.now();
     this.isActive = true;
     this.intervalId = setInterval(() => {
@@ -61,7 +63,7 @@ class Timer {
       let timeLeft = selectedDateMS - currentTime;
       let timeComponents = getTimeComponents(timeLeft);
       updateClockFace(timeComponents);
-      console.log(timeComponents);
+      //   console.log(timeComponents);
       if (timeLeft <= 1000) {
         Notiflix.Notify.success('That is all');
         this.stop();
@@ -69,11 +71,11 @@ class Timer {
       }
     }, 1000);
   }
-//stop timer
+  //stop timer
   stop() {
-      clearInterval(this.intervalId);
-      this.isActive = false;
-    //   refs.stopBtnEl.disabled = true;  
+    clearInterval(this.intervalId);
+    this.isActive = false;
+    //   refs.stopBtnEl.disabled = true;
   }
 }
 
@@ -81,10 +83,9 @@ const timer = new Timer();
 
 // start counter timeleft
 function onBtnClickStartCount(e) {
-  refs.startBtnEl.disabled = true;
   timer.start();
-//   refs.stopBtnEl.addEventListener('click', onBtnClickStopCount);
-  refs.stopBtnEl.disabled = false;
+  //   refs.stopBtnEl.addEventListener('click', onBtnClickStopCount);
+  //   refs.stopBtnEl.disabled = false;
 }
 
 //stop counter timeleft
@@ -102,20 +103,45 @@ function getTimeComponents(ms) {
   let days = addLeadingZero(Math.floor(ms / day));
   let hours = addLeadingZero(Math.floor((ms % day) / hour));
   let minutes = addLeadingZero(Math.floor(((ms % day) % hour) / minute));
-  let seconds = addLeadingZero(Math.floor((((ms % day) % hour) % minute) / second));
+  let seconds = addLeadingZero(
+    Math.floor((((ms % day) % hour) % minute) / second)
+  );
 
   return { days, hours, minutes, seconds };
 }
 // show my timer
-function updateClockFace ({days, hours, minutes, seconds}){
+function updateClockFace({ days, hours, minutes, seconds }) {
+  refs.counterBoxEl.style.opacity = 1;
+  if (`${days}` != 00) {
+    refs.daysEl.textContent =
+      refs.counterBoxEl.firstElementChild.style.display = 'flex';
     refs.daysEl.textContent = `${days}`;
+  } else {
+    refs.counterBoxEl.firstElementChild.style.display = 'none';
+  }
+  if (`${hours}` != 00) {
+    refs.hoursEl.textContent =
+      refs.counterBoxEl.firstElementChild.nextElementSibling.style.display =
+        'flex';
     refs.hoursEl.textContent = `${hours}`;
+  } else {
+    refs.counterBoxEl.firstElementChild.nextElementSibling.style.display =
+      'none';
+  }
+  if (`${minutes}` != 00) {
+    refs.minutesEl.textContent =
+      refs.counterBoxEl.lastElementChild.previousElementSibling.style.display =
+        'flex';
     refs.minutesEl.textContent = `${minutes}`;
-    refs.secondsEl.textContent = `${seconds}`;
-    
+  } else {
+    refs.counterBoxEl.lastElementChild.previousElementSibling.style.display =
+      'none';
+  }
+
+  refs.secondsEl.textContent = `${seconds}`;
 }
-// add zero 
-function addLeadingZero(value){
-        return String(value).padStart(2, '0');
+// add zero
+function addLeadingZero(value) {
+  return String(value).padStart(2, '0');
 }
 flatpickr('#datetime-picker', options);

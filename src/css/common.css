@@ -7,7 +7,7 @@ body {
     Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #fafafa;
+  background-color: #1deddf3b;
   color: #212121;
   line-height: 1.5;
 }
@@ -25,24 +25,30 @@ img {
   width: 200px;
   padding: 5px 0;
   border-radius: 4px;
+  border-color: transparent;
   margin-top: 100px;
 }
-button[data-start]{
+#datetime-picker:hover{
+  background: #2eae93; 
+
+}
+button{
   display: block;
   margin: 0 auto ;
   width: 250px;
   height: 55px;
   border-radius: 6px;
   border-color: transparent;
-  /* box-shadow: #212121 6px; */
-  background: #9ef1e2;
+  background: #6fedd6; 
   margin-top: 20px;
   font-size: large;
 }
 
+
+
 .value{
   font-weight: 900;
-  font-size: x-large;
+  font-size: 64;
   text-align: center;
   position: relative;
 }
@@ -51,26 +57,27 @@ button[data-start]{
   padding: 15px;
   border-radius: 4px;
   background: #00816a;
-  padding-top: 25px;
   font-size: 20px;
   width: 100px;
 }
 
 .timer{
+  opacity :0;
   display: flex;
   justify-content:center;
   gap: 40px;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 20px;
+  border-color: transparent;
   background: #205147;
   width: 800px;
   margin: 40px auto 0 auto ;
-
 }
 .field{
   display: flex;
   flex-direction: column;
   padding: 10px;
-  border-radius: 3px;
+  border-radius: 50%;
   background: #00bf96;
+  border-color: transparent;
 }
