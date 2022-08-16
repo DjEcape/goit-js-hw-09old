@@ -1,5 +1,4 @@
 import flatpickr from 'flatpickr';
-// import 'flatpickr/dist/flatpickr.min.css';
 import 'flatpickr/dist/themes/material_green.css';
 import Notiflix from 'notiflix';
 import 'notiflix/dist/notiflix-3.2.5.min.css';
@@ -7,7 +6,6 @@ import 'notiflix/dist/notiflix-3.2.5.min.css';
 const refs = {
   inputDateEl: document.querySelector('#datetime-picker'),
   startBtnEl: document.querySelector('[data-start]'),
-  //   stopBtnEl: document.querySelector('[data-stop]'),
   counterBoxEl: document.querySelector('.timer'),
   daysEl: document.querySelector('[data-days]'),
   hoursEl: document.querySelector('[data-hours]'),
@@ -15,10 +13,10 @@ const refs = {
   secondsEl: document.querySelector('[data-seconds]'),
 };
 
-console.log(refs.counterBoxEl.lastElementChild.previousElementSibling);
-// refs.stopBtnEl.disabled = true;
 refs.startBtnEl.disabled = true;
 Notiflix.Notify.info('Choose the date');
+let dateToSelect = 0; 
+
 // flatpickr options
 const options = {
   onOpen() {
@@ -30,14 +28,13 @@ const options = {
   minuteIncrement: 1,
   dateFormat: 'Y-m-d H:i',
   onClose(selectedDate) {
-    if (selectedDate[0] <= Date.now()) {
+    dateToSelect = selectedDate[0];
+    if (selectedDate[0] < Date.now()) {
       Notiflix.Notify.failure('Please choose a date in the future');
     } else {
       Notiflix.Notify.success('Good!');
-      refs.startBtnEl.disabled = false;
-      //   refs.stopBtnEl.disabled = true;
       refs.startBtnEl.addEventListener('click', onBtnClickStartCount);
-      console.log(selectedDate[0]);
+      refs.startBtnEl.disabled = false;
     }
   },
 };
@@ -57,13 +54,10 @@ class Timer {
     this.isActive = true;
     this.intervalId = setInterval(() => {
       const currentTime = Date.now();
-      let selectedDateMS = new Date(
-        refs.inputDateEl.value.replace(/-/g, '/')
-      ).getTime();
+      const selectedDateMS = new Date(dateToSelect).getTime();
       let timeLeft = selectedDateMS - currentTime;
       let timeComponents = getTimeComponents(timeLeft);
       updateClockFace(timeComponents);
-      //   console.log(timeComponents);
       if (timeLeft <= 1000) {
         Notiflix.Notify.success('That is all');
         this.stop();
@@ -75,7 +69,6 @@ class Timer {
   stop() {
     clearInterval(this.intervalId);
     this.isActive = false;
-    //   refs.stopBtnEl.disabled = true;
   }
 }
 
@@ -84,14 +77,7 @@ const timer = new Timer();
 // start counter timeleft
 function onBtnClickStartCount(e) {
   timer.start();
-  //   refs.stopBtnEl.addEventListener('click', onBtnClickStopCount);
-  //   refs.stopBtnEl.disabled = false;
 }
-
-//stop counter timeleft
-// function onBtnClickStopCount(e) {
-//   timer.stop();
-// }
 
 // calculating second,minute,hour,day
 function getTimeComponents(ms) {
@@ -106,9 +92,9 @@ function getTimeComponents(ms) {
   let seconds = addLeadingZero(
     Math.floor((((ms % day) % hour) % minute) / second)
   );
-
   return { days, hours, minutes, seconds };
 }
+
 // show my timer
 function updateClockFace({ days, hours, minutes, seconds }) {
   refs.counterBoxEl.style.opacity = 1;

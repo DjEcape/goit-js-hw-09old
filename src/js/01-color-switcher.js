@@ -8,6 +8,7 @@ const refs = {
   body: document.querySelector('body'),
 };
 let intervalId = null;
+// const hexRandomiser = getRandomHexColor()
 
 function changerEventLestener(){
   refs.stopBtn.setAttribute('disabled', 'disabled');
